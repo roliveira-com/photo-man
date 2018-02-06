@@ -4,11 +4,27 @@
   div ou section aou algo do tipo 
   -->
   <div class="container">
+    <header>
+      <nav class="clearfix">
+        <div class="nav-left">
+          <a class="nav-brand" href="">Photo Man</a>
+        </div>
+        <div class="nav-right">
+          <ul class="nav-links">
+            <li class="nav-links__item">Login</li>
+          </ul>
+        </div>
+      </nav>
+    </header>
     <div class="title-box">
-      <h1>{{ titulo }}</h1>
+      <h1>Album: {{ titulo }}</h1>
     </div>
 
-    <ul>
+    <!-- <polaroids>
+      <img :src="imagem.url" :alt="imagem.titulo">
+    </polaroids> -->
+
+    <ul class="polaroids">
       <!-- ## Iterando dados -->
       <!-- #  iterando array de dados com o v-for -->
       <li v-for="imagem of imagens">
@@ -16,7 +32,9 @@
         A string interpolation em atributos html não é permitida no vue. Para isto é necessário
         usar a diretiva v-bind (v-bind:atributo) ou o shorhand : (:atributo) 
         -->
-        <img :src="imagem.url" :alt="imagem.alt">
+        <a href="" :title="imagem.titulo">
+          <img :src="imagem.url" :alt="imagem.titulo">
+        </a>
       </li>
     </ul>
   </div>
@@ -28,7 +46,7 @@ export default {
   
   data () {
     return {
-      titulo: 'Photo Man',
+      titulo: 'Momentos',
       imagens: []
     }
   },
@@ -41,8 +59,8 @@ export default {
     this.$http.get('http://localhost:3000/v1/fotos')
         .then(res => res.json())
         .then(
-          // imgs => this.imagens = imgs,
-          imgs => console.log(imgs),
+          imgs => this.imagens = imgs,
+          // imgs => console.log(imgs),
           err => console.log(err)
         );
   }
@@ -50,6 +68,96 @@ export default {
 </script>
 
 <style lang="scss">
+
+  body {
+    margin: 0;
+  }
+
+  .clearfix {
+    overflow: auto;
+    zoom: 1;
+  }
+
+  header {
+    display: block;
+    margin: 0;
+    padding: 5px 15px;
+    background-color: #CCC;
+  }
+
+  nav{
+    display: block;
+
+    .nav-left{
+      display: inline-block;
+      float: left;
+    }
+
+    .nav-right{
+      display: inline-block;
+      float: right;      
+    }
+
+    .nav-links{
+      display: inline-block;
+      margin: 5px;
+
+      .nav-links__item{
+        display: inline-block;
+        padding: 5px 15px;
+      }
+    }
+
+    .nav-brand,
+    .nav-brand:hover,
+    .nav-brand:visited{
+      display: inline-block;
+      margin: 5px 0;
+      font-size: 26px;
+      font-weight: bold;
+      text-decoration: none;
+      text-transform: uppercase;
+      color:rgb(0, 160, 160);
+    }
+  }
+
+  .polaroids {
+
+    li{
+      display: inline;
+      padding-left: 0
+    }
+
+    a {
+      background: #fff;
+      display: inline;
+      float: left;
+      margin: 0 0 27px 30px;
+      width: auto;
+      padding: 10px 10px 15px;
+      text-align: center;
+      font-family: "Marker Felt", sans-serif;
+      text-decoration: none;
+      color: #333;
+      font-size: 18px;
+      box-shadow: 0 3px 6px rgba(0,0,0,.25);
+      transition: transform .15s linear;
+
+      &::after {
+        content: attr(title);
+      }
+      
+    }
+  
+    img{
+      display: block;
+      width: 190px;
+      margin-bottom: 12px;
+    }
+
+
+  }
+
   div {
     font-family: 'Avenir', Helvetica, Arial, sans-serif;
     -webkit-font-smoothing: antialiased;
