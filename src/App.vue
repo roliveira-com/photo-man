@@ -20,29 +20,37 @@
       <h1>Album: {{ titulo }}</h1>
     </div>
 
-    <!-- <polaroids>
-      <img :src="imagem.url" :alt="imagem.titulo">
-    </polaroids> -->
+    <polaroids v-for="imagem of imagens" :titulo="imagem.titulo">
+      <p>{{ imagem.titulo }}</p>
+      <a href="#"><img :src="imagem.url" :alt="imagem.titulo"></a>
+    </polaroids>
 
-    <ul class="polaroids">
-      <!-- ## Iterando dados -->
-      <!-- #  iterando array de dados com o v-for -->
+    <!-- <ul class="polaroids">
+      ## Iterando dados
+      #  iterando array de dados com o v-for
       <li v-for="imagem of imagens">
-        <!-- 
+        
         A string interpolation em atributos html não é permitida no vue. Para isto é necessário
         usar a diretiva v-bind (v-bind:atributo) ou o shorhand : (:atributo) 
-        -->
+       
         <a href="" :title="imagem.titulo">
           <img :src="imagem.url" :alt="imagem.titulo">
         </a>
       </li>
-    </ul>
+    </ul> -->
   </div>
 </template>
 
 <script>
+
+import Painel from './components/shared/polaroids/Polaroids.vue';
+
 export default {
   name: 'app',
+
+  components: {
+    'polaroids' : Painel
+  },
   
   data () {
     return {
@@ -119,43 +127,6 @@ export default {
       text-transform: uppercase;
       color:rgb(0, 160, 160);
     }
-  }
-
-  .polaroids {
-
-    li{
-      display: inline;
-      padding-left: 0
-    }
-
-    a {
-      background: #fff;
-      display: inline;
-      float: left;
-      margin: 0 0 27px 30px;
-      width: auto;
-      padding: 10px 10px 15px;
-      text-align: center;
-      font-family: "Marker Felt", sans-serif;
-      text-decoration: none;
-      color: #333;
-      font-size: 18px;
-      box-shadow: 0 3px 6px rgba(0,0,0,.25);
-      transition: transform .15s linear;
-
-      &::after {
-        content: attr(title);
-      }
-      
-    }
-  
-    img{
-      display: block;
-      width: 190px;
-      margin-bottom: 12px;
-    }
-
-
   }
 
   div {
