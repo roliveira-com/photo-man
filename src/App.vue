@@ -3,7 +3,7 @@
   Mais que um elemento dentro da tag template devem ser encapsulador por uma
   div ou section aou algo do tipo 
   -->
-  <div class="container">
+  <div>
     <header>
       <nav class="clearfix">
         <div class="nav-left">
@@ -16,14 +16,32 @@
         </div>
       </nav>
     </header>
+
     <div class="title-box">
       <h1>Album: {{ titulo }}</h1>
     </div>
 
-    <polaroids v-for="imagem of imagens" :titulo="imagem.titulo">
-      <p>{{ imagem.titulo }}</p>
-      <a href="#"><img :src="imagem.url" :alt="imagem.titulo"></a>
-    </polaroids>
+    <nav class="context-menu">
+      <div class="container">
+        <div class="context-menu__items-left">
+          <input class="filter-input" type="text" v-on:input="filtro = $event.target.value" placeholder="filtre por título">
+        </div>
+        <div class="context-menu__items-right">
+          <a class="context-menu__item" href="">Nova Foto</a>
+          <a class="context-menu__item" href="">selecionar fotos</a>
+          <a class="context-menu__item" href="">novo album</a>
+        </div>
+        <p>&nbsp;</p>
+      </div>
+    </nav>
+
+    <div class="content">
+      <div class="container">
+        <polaroids v-for="imagem of filteredImages" :titulo="imagem.titulo">
+          <img :src="imagem.url" :alt="imagem.titulo">
+        </polaroids>
+      </div>
+    </div>
 
     <!-- <ul class="polaroids">
       ## Iterando dados
@@ -43,19 +61,20 @@
 
 <script>
 
-import Painel from './components/shared/polaroids/Polaroids.vue';
+import Polaroids from './components/shared/polaroids/Polaroids.vue';
 
 export default {
   name: 'app',
 
   components: {
-    'polaroids' : Painel
+    'polaroids' : Polaroids
   },
   
   data () {
     return {
       titulo: 'Momentos',
-      imagens: []
+      imagens: [],
+      filtro: ''
     }
   },
 
@@ -71,6 +90,17 @@ export default {
           // imgs => console.log(imgs),
           err => console.log(err)
         );
+  },
+
+  computed: {
+    filteredImages(){
+      if(this.filtro){
+        let exp = new RegExp(this.filtro.trim(), 'i');
+        return this.imagens.filter(foto => exp.test(foto.titulo));
+      }else{
+        return this.imagens;
+      }
+    }
   }
 }
 </script>
@@ -79,6 +109,10 @@ export default {
 
   body {
     margin: 0;
+  }
+
+  input{
+    outline: none;
   }
 
   .clearfix {
@@ -91,6 +125,104 @@ export default {
     margin: 0;
     padding: 5px 15px;
     background-color: #CCC;
+  }
+
+  .context-menu {
+    border-bottom: 1px solid #CCC;
+
+    &__items-left{
+      display: block;
+      float: none;
+
+      @media (min-width: 768px){
+        display: inline-block;
+        float: left;
+      }
+    }
+
+    &__items-right{
+      display: block;
+      float: none;
+
+      @media (min-width: 768px){
+        display: inline-block;
+        float: right;
+      }
+    }
+
+    &__item{
+      display: block;
+      padding: 14px 10px;
+      font-size: 14px;
+      font-weight: bold;
+      color: #969696;
+      text-transform: uppercase;
+      text-decoration: none;
+      white-space: nowrap;
+
+      &.active,
+      &:hover{
+        color: #42b983;
+        border-bottom: 3px solid #42b983;
+      }
+
+      @media(min-width: 768px){
+        display: inline;
+      }
+    }
+
+    .filter-input {
+      position: relative;
+      width: 90%;
+      height: 40px;
+      top: -20px;
+      font-size: 14px;
+      padding: 3px;
+      border: 2px solid #ccc;
+
+      &:focus{
+        border: 2px solid #42b983;
+      }
+
+      &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
+        color: #CCC;
+      }
+      &::-moz-placeholder { /* Firefox 19+ */
+        color: #CCC;
+      }
+      &:-ms-input-placeholder { /* IE 10+ */
+        color: #CCC;
+      }
+      &:-moz-placeholder { /* Firefox 18- */
+        color: #CCC;
+      }
+
+      @media (min-width: 768px){
+        width: 200px;
+        height: 20px;
+        top: -5px;
+      }
+
+    }
+
+    .container{
+      margin-top: 0;
+      margin-right: auto;
+      margin-left: auto;
+      padding-left: 0;
+      padding-right: 0;
+      clear: both;
+
+      @media (min-width: 768px) {
+        width: 750px;
+      }
+      @media (min-width: 992px) {
+        width: 970px;
+      }
+      @media (min-width: 1200px) {
+        width: 1170px;
+      }
+    }
   }
 
   nav{
@@ -138,10 +270,29 @@ export default {
     margin: 0;
   }
 
+  div.container {
+    margin-top: 30px;
+    margin-right: auto;
+    margin-left: auto;
+    padding-left: 15px;
+    padding-right: 15px;
+
+    @media (min-width: 768px) {
+      width: 750px;
+    }
+    @media (min-width: 992px) {
+      width: 970px;
+    }
+    @media (min-width: 1200px) {
+      width: 1170px;
+    }
+  }
+
   div.title-box{
     padding: 3rem 1rem; 
     text-align: left;
     background-color: #42b983;
+    box-shadow: -1px 2px 6px -1px rgba(133,139,166,0.5);
 
     h1 {
       margin: 0;

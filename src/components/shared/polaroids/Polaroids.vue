@@ -1,55 +1,99 @@
 <template>
-  <ul class="polaroids">
-    <li>
-      <slot>
-        {{ titulo }}
-      </slot>
-    </li>
-  </ul>
+  <transition name="card-fade">
+    <div class="polaroids" @dblclick="visivel = !visivel">
+      <a href=""><slot></slot></a>
+    <transition name="text-fade">
+      <p v-show="visivel">{{ titulo }}</p>
+    </transition>
+  </div>
+  </transition>
 </template>
 
 <script>
   export default {
-    props: ['titulo']
+    props: ['titulo'],
+
+    data(){
+      return {
+        visivel: true
+      }
+    }
   }
 </script>
 
 <style lang="scss" scoped>
 
-  .polaroids {
+  @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
 
-    li{
-      display: inline;
-      padding-left: 0
+  .polaroids {
+    display: inline-block;
+    padding-bottom: 50px;
+    width: 100%;
+    font-family: "Permanent Marker", sans-serif;
+    font-size: 18px;
+    text-align: center;
+    color: #333;
+    box-shadow: 0 3px 6px rgba(0,0,0,.25);
+    transition: transform .15s linear;
+
+    @media (min-width: 768px){
+      width: 32%;
+      margin-right: 1%;
+      margin-bottom: 1%;
     }
 
     a {
       background: #fff;
-      display: inline;
-      float: left;
-      margin: 0 0 27px 30px;
+      display: block;
+      margin: 10px;
+      padding: 15px;
       width: auto;
-      padding: 10px 10px 15px;
-      text-align: center;
-      font-family: "Marker Felt", sans-serif;
-      text-decoration: none;
-      color: #333;
-      font-size: 18px;
-      box-shadow: 0 3px 6px rgba(0,0,0,.25);
-      transition: transform .15s linear;
+      height: 220px;
+      overflow: hidden;
+    }
 
-      &::after {
-        content: attr(title);
-      }
-      
+    p{
+      margin: 15px 0;
     }
   
     img{
-      display: block;
-      width: 190px;
+      display: inline-block;
+      width: 100%;
       margin-bottom: 12px;
     }
 
-
   }
+
+  // As classes abaixo são geradas a partir do valor do atributo
+  // 'name' definido na tag transition no template
+  // antes do elemento ser incluído ou removido, o estado atual
+  .text-fade-enter {
+    transition: all ease .3s;
+  }
+
+  // quando o elemento esta sendo incluído
+  .text-fade-enter-active {
+    position: relative;
+    opacity: 0;
+    transition: all ease .3s;
+  }
+
+  // quando o elemento esta sendo removido
+  .text-fade-leave-active {
+    position: relative;
+    opacity: 0;
+    transition: all ease .3s;
+  }
+
+  .card-fade-enter {
+    transition: all ease .3s;
+  }
+
+  .card-fade-enter-active,
+  .card-fade-leave-active {
+    position: relative;
+    opacity: 0;
+    transition: all ease .3s;
+  }
+
 </style>
