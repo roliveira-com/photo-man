@@ -4,22 +4,8 @@
   div ou section aou algo do tipo 
   -->
   <div>
-    <header>
-      <nav class="clearfix">
-        <div class="nav-left">
-          <a class="nav-brand" href="">Photo Man</a>
-        </div>
-        <div class="nav-right">
-          <ul class="nav-links">
-            <li class="nav-links__item">Login</li>
-          </ul>
-        </div>
-      </nav>
-    </header>
 
-    <div class="title-box">
-      <h1>Album: {{ titulo }}</h1>
-    </div>
+    <banner :titulo="titulo"></banner>
 
     <nav class="context-menu">
       <div class="container">
@@ -37,7 +23,7 @@
 
     <div class="content">
       <div class="container">
-        <polaroids v-for="imagem of filteredImages" :titulo="imagem.titulo">
+        <polaroids v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo">
           <img :src="imagem.url" :alt="imagem.titulo">
         </polaroids>
       </div>
@@ -62,17 +48,19 @@
 <script>
 
 import Polaroids from '../shared/polaroids/Polaroids.vue';
+import Banner from '../shared/banner/Banner.vue'
 
 export default {
   name: 'app',
 
   components: {
-    'polaroids' : Polaroids
+    'polaroids' : Polaroids,
+    'banner' : Banner
   },
   
   data () {
     return {
-      titulo: 'Momentos',
+      titulo: 'Album: Momentos',
       imagens: [],
       filtro: ''
     }
@@ -105,7 +93,7 @@ export default {
 }
 </script>
 
-<style lang="scss">
+<style lang="scss" scoped>
 
   body {
     margin: 0;
@@ -113,18 +101,6 @@ export default {
 
   input{
     outline: none;
-  }
-
-  .clearfix {
-    overflow: auto;
-    zoom: 1;
-  }
-
-  header {
-    display: block;
-    margin: 0;
-    padding: 5px 15px;
-    background-color: #CCC;
   }
 
   .context-menu {
@@ -162,7 +138,7 @@ export default {
 
       &.active,
       &:hover{
-        color: #42b983;
+        color: #00a0a0;
         border-bottom: 3px solid #42b983;
       }
 
@@ -181,7 +157,7 @@ export default {
       border: 2px solid #ccc;
 
       &:focus{
-        border: 2px solid #42b983;
+        border: 2px solid #00a0a0;
       }
 
       &::-webkit-input-placeholder { /* Chrome/Opera/Safari */
@@ -225,51 +201,6 @@ export default {
     }
   }
 
-  nav{
-    display: block;
-
-    .nav-left{
-      display: inline-block;
-      float: left;
-    }
-
-    .nav-right{
-      display: inline-block;
-      float: right;      
-    }
-
-    .nav-links{
-      display: inline-block;
-      margin: 5px;
-
-      .nav-links__item{
-        display: inline-block;
-        padding: 5px 15px;
-      }
-    }
-
-    .nav-brand,
-    .nav-brand:hover,
-    .nav-brand:visited{
-      display: inline-block;
-      margin: 5px 0;
-      font-size: 26px;
-      font-weight: bold;
-      text-decoration: none;
-      text-transform: uppercase;
-      color:rgb(0, 160, 160);
-    }
-  }
-
-  div {
-    font-family: 'Avenir', Helvetica, Arial, sans-serif;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
-    text-align: center;
-    color: #2c3e50;
-    margin: 0;
-  }
-
   div.container {
     margin-top: 30px;
     margin-right: auto;
@@ -288,31 +219,7 @@ export default {
     }
   }
 
-  div.title-box{
-    padding: 3rem 1rem; 
-    text-align: left;
-    background-color: #42b983;
-    box-shadow: -1px 2px 6px -1px rgba(133,139,166,0.5);
 
-    h1 {
-      margin: 0;
-      font-size: 36px;
-      font-weight: bold;
-      text-transform: uppercase;
-      color: #FFF;
-
-      &:after {
-        content: '';
-        display: block;
-        margin-top: 5px;
-        width: 150px;
-        height: 0px;
-        background-color: #FFF;
-        border: 1px solid #FFF;
-        border-radius: 4px;
-      }
-    }
-  }
 
   h1, h2 {
     font-weight: normal;
@@ -344,6 +251,6 @@ export default {
   }
 
   a {
-    color: #42b983;
+    color: #00a0a0;
   }
 </style>

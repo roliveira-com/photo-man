@@ -1,0 +1,50 @@
+body {
+  font-family: 'Avenir', Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-align: center;
+  color: #2c3e50;
+  margin: 0;
+  padding: 0
+}
+
+header {
+  display: block;
+  margin: 0;
+  padding: 0 15px;
+  background-color: #CCC;
+}
+
+
+.clearfix {
+  overflow: auto;
+  zoom: 1;
+}
+
+main,
+.wrapper{
+  margin: 0;
+  padding: 0
+}
+
+div.container {
+  margin-right: auto;
+  margin-left: auto;
+  padding-left: 15px;
+  padding-right: 15px;
+
+  @media (min-width: 768px) {
+    width: 750px;
+  }
+  @media (min-width: 992px) {
+    width: 970px;
+  }
+  @media (min-width: 1200px) {
+    width: 1170px;
+  }
+}
+
+.logo-sm {
+  width: 35px;
+  height: auto;
+}
