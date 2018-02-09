@@ -39,11 +39,12 @@
 
     .nav-links{
       display: inline-block;
+      padding-left: 20px;
       margin: 0 5px;
 
       .nav-links__item{
         display: inline-block;
-        padding: 15px 5px;
+        padding: 15px 5px 20px;
       }
       .nav-links__item a{
         display: inline-block;
@@ -70,12 +71,14 @@
     .nav-brand:hover,
     .nav-brand:visited{
       display: inline-block;
+      position: relative;
+      top: 10px;
       margin: 5px 0;
       font-size: 26px;
       font-weight: bold;
       text-decoration: none;
       text-transform: uppercase;
-      color:rgb(0, 160, 160);
+      color: #00a0a0;
     }
   }
 </style>

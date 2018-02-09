@@ -7,10 +7,10 @@
 <script>
 export default {
 
-  // Implementaso validação na declaração da propriedade
+  // Implementando validação na declaração da propriedade
   props : {
     titulo: {
-      type: Array,
+      type: String,
       required: true
     }
   }
