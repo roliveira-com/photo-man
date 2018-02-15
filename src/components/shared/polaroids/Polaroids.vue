@@ -1,16 +1,29 @@
 <template>
   <transition name="card-fade">
-    <div class="polaroids" @dblclick="visivel = !visivel">
-      <a href=""><slot></slot></a>
-    <transition name="text-fade">
-      <p v-show="visivel">{{ titulo }}</p>
-    </transition>
+    <div class="polaroids">
+      <a  @dblclick="visivel = !visivel">
+        <slot></slot>
+      </a>
+      <p>{{ titulo }}</p>
+      <transition name="text-collapse">
+      <!-- <div class="polaroids__footer" v-show="visivel">
+        <btn type="button" label="delete" @click.native="remove($event.target)" />
+      </div> -->
+      </transition>
   </div>
   </transition>
 </template>
 
 <script>
+
+  import Button from '../button/Button.vue';
+
   export default {
+
+    components: {
+      'btn' : Button
+    },
+
     props: ['titulo'],
 
     data(){
@@ -27,12 +40,14 @@
 
   .polaroids {
     display: inline-block;
+    position: relative;
     padding-bottom: 50px;
     width: 100%;
     font-family: "Permanent Marker", sans-serif;
     font-size: 18px;
     text-align: center;
     color: #333;
+    overflow: hidden;
     box-shadow: 0 3px 6px rgba(0,0,0,.25);
     transition: transform .15s linear;
 
@@ -62,26 +77,40 @@
       margin-bottom: 12px;
     }
 
+    .polaroids__footer{
+      display: block;
+      position: absolute;
+      width: 100%;
+      right: 1%;
+      bottom: 1%;
+      padding: 10px;
+      text-align: right;
+    }
+
   }
 
   // As classes abaixo são geradas a partir do valor do atributo
   // 'name' definido na tag transition no template
   // antes do elemento ser incluído ou removido, o estado atual
-  .text-fade-enter {
+  .text-collapse-enter {
+    overflow: hidden;
+    transform: translateY(0px);
     transition: all ease .3s;
   }
 
   // quando o elemento esta sendo incluído
-  .text-fade-enter-active {
+  .text-collapse-enter-active {
     position: relative;
-    opacity: 0;
+    transform: translateY(0);
+    overflow: hidden;
     transition: all ease .3s;
   }
 
   // quando o elemento esta sendo removido
-  .text-fade-leave-active {
+  .text-collapse-leave-active {
     position: relative;
-    opacity: 0;
+    transform: translateY(100px);
+    overflow: hidden;
     transition: all ease .3s;
   }
 

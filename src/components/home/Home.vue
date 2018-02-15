@@ -25,6 +25,14 @@
       <div class="container">
         <polaroids v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo">
           <img :src="imagem.url" :alt="imagem.titulo">
+          <!-- No botão abaixo o método remove() é chamado atraves do evento click do botao. Contudoo botão esta encapsulado 
+          no custom elelemtn btn-danger que não tem o evento click configurado. Assim, chamamos a proproedade 'click.native'
+          que vai buscar no elemento nativo desntro deste custom element para o evento solicitado, e chamando o metodo
+          <btn-delete type="button" label="delete" @click.native="remove($event.target)" /> -->
+
+          <!-- Já em 'btn-delete' abaixo, configurei o evento confirmed diretamento no elemento, assim não é mais necessario usar
+          a propriedade click.native, bastar usar o event customizado. -->
+          <btn skin="danger" type="button" label="delete" :sensitive="true" @confirmed="remove($event)"/>
         </polaroids>
       </div>
     </div>
@@ -49,13 +57,15 @@
 
 import Polaroids from '../shared/polaroids/Polaroids.vue';
 import Banner from '../shared/banner/Banner.vue'
+import Button from '../shared/button/Button.vue';
 
 export default {
   name: 'app',
 
   components: {
     'polaroids' : Polaroids,
-    'banner' : Banner
+    'banner' : Banner,
+    'btn' : Button
   },
   
   data () {
@@ -89,7 +99,13 @@ export default {
         return this.imagens;
       }
     }
-  }
+  },
+
+    methods :{
+      remove(data){
+        console.log(data)
+      }
+    }
 }
 </script>
 
@@ -139,7 +155,7 @@ export default {
       &.active,
       &:hover{
         color: #00a0a0;
-        border-bottom: 3px solid #42b983;
+        border-bottom: 3px solid #00a0a0;
       }
 
       @media(min-width: 768px){

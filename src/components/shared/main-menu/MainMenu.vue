@@ -4,7 +4,9 @@
       <div class="nav-left">
         <a class="nav-brand" href=""><img class="logo-sm" src="../../../assets/logo.svg" alt="Photo Man"></a>
         <ul class="nav-links">
-          <li class="nav-links__item" v-for="link in links"><router-link :to="link.path ? link.path : '/'">{{ link.label }}</router-link></li>
+          <li class="nav-links__item" v-for="link in links">
+            <router-link :to="link.path ? link.path : '/'">{{ link.label }}</router-link>
+          </li>
         </ul>
       </div>
       <div class="nav-right">
@@ -44,11 +46,11 @@
 
       .nav-links__item{
         display: inline-block;
-        padding: 15px 5px 20px;
+        padding: 20px 5px;
       }
       .nav-links__item a{
         display: inline-block;
-        padding: 5px 15px;
+        padding: 5px 15px 3px;
         font-size: 13px;
         font-weight: bold;
         color: #00a0a0;
