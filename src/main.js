@@ -5,6 +5,12 @@ import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
 import { routes } from './routes'
 
+// ***
+// Importando diretivas diretamente no global view object
+// deste modo ela estará disponível para a aplicação inteira
+// ***
+// import './directives/rotate'
+
 Vue.use(VueResource);
 Vue.use(VueRouter);
 

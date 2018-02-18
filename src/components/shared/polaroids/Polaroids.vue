@@ -7,7 +7,7 @@
       <p>{{ titulo }}</p>
       <transition name="text-collapse">
       <!-- <div class="polaroids__footer" v-show="visivel">
-        <btn type="button" label="delete" @click.native="remove($event.target)" />
+        <btn type="button" label="delete" skin="danger" :sensitive="true" />
       </div> -->
       </transition>
   </div>
@@ -41,6 +41,7 @@
   .polaroids {
     display: inline-block;
     position: relative;
+    padding: 15px;
     padding-bottom: 50px;
     width: 100%;
     font-family: "Permanent Marker", sans-serif;
@@ -49,22 +50,36 @@
     color: #333;
     overflow: hidden;
     box-shadow: 0 3px 6px rgba(0,0,0,.25);
-    transition: transform .15s linear;
+    // transition: transform .15s linear;
+
+    // &:hover{
+    //   transform: scale(1.2) rotate(5deg);
+    //   transition: transform ease-in-out .3s;
+    // }
 
     @media (min-width: 768px){
-      width: 32%;
-      margin-right: 1%;
-      margin-bottom: 1%;
+      width: 25%;
+      margin-right: 5%;
+      margin-bottom: 5%;
     }
 
     a {
       background: #fff;
       display: block;
       margin: 10px;
-      padding: 15px;
       width: auto;
       height: 220px;
       overflow: hidden;
+    }
+
+    a .polaroids__footer{
+      display: block;
+      position: absolute;
+      width: 100%;
+      right: 1%;
+      bottom: 1%;
+      padding: 10px;
+      text-align: right;
     }
 
     p{
@@ -75,16 +90,6 @@
       display: inline-block;
       width: 100%;
       margin-bottom: 12px;
-    }
-
-    .polaroids__footer{
-      display: block;
-      position: absolute;
-      width: 100%;
-      right: 1%;
-      bottom: 1%;
-      padding: 10px;
-      text-align: right;
     }
 
   }

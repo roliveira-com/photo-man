@@ -1,5 +1,7 @@
 <template>
-  <button :class="btn_style" @click="clicked()" :type="type">{{ label }}</button>
+  <div class="polaroids__footer" v-show="visivel">
+    <button :class="btn_style" @click="clicked()" :type="type">{{ label }}</button>
+  </div>
 </template>
 
 <script>

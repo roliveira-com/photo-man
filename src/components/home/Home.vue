@@ -23,16 +23,40 @@
 
     <div class="content">
       <div class="container">
-        <polaroids v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo">
+        <!--
+        // Diretivas customizadas
+        // No elemento 'polaroids' abaixo, a diretiva 'v-rotate' foi customizada. Nela é possível passar parametros de
+        // configuracao como o objeto contento 'degree' e 'animate'
+        -->
+        <!-- <polaroids v-rotate="{degree: 90, animate: true}" v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo"> -->
+        <!-- 
+        Diretivas com modificadores
+        Abaixo, ao inves de passarmos um objeto de configuração, chamamos a diretiva com as propriedades/modificadores 'animate' e 'reverse'
+        para dizer a a animação deve ser aplicada em sentido anti-horario. Para alterar o sentido bastar remover o modificador '.reverse' e 
+        para remover a animação baste remover o modificador '.animate'
+        -->
+        <!-- <polaroids v-rotate.animate.reverse="15" v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo" @confirmed="remove($event)"> -->
+        <!-- 
+        Diretivas com argumentos
+        Os argumentos, assim como o os modificadores dão a possibiidade de passar valores adicionais para ativar certas logicas nas Diretivas
+        No caso abaixo, o argumento ':scale' faz com que a diretiva 'v-rotate' aplique um efeito de scale 
+        -->
+        <polaroids v-rotate:scale.animate="1.1" v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo" @confirmed="remove($event)">
           <img :src="imagem.url" :alt="imagem.titulo">
-          <!-- No botão abaixo o método remove() é chamado atraves do evento click do botao. Contudoo botão esta encapsulado 
-          no custom elelemtn btn-danger que não tem o evento click configurado. Assim, chamamos a proproedade 'click.native'
-          que vai buscar no elemento nativo desntro deste custom element para o evento solicitado, e chamando o metodo
-          <btn-delete type="button" label="delete" @click.native="remove($event.target)" /> -->
+          <!-- 
+          // No botão abaixo o método remove() é chamado atraves do evento click do botao. Contudoo botão esta encapsulado 
+          // no custom elelemtn btn-danger que não tem o evento click configurado. Assim, chamamos a proproedade 'click.native'
+          // que vai buscar no elemento nativo desntro deste custom element para o evento solicitado, e chamando o metodo
+          // <btn-delete type="button" label="delete" @click.native="remove($event.target)" /> 
+          -->
 
-          <!-- Já em 'btn-delete' abaixo, configurei o evento confirmed diretamento no elemento, assim não é mais necessario usar
-          a propriedade click.native, bastar usar o event customizado. -->
-          <btn skin="danger" type="button" label="delete" :sensitive="true" @confirmed="remove($event)"/>
+          <!-- 
+          // Já em 'btn' abaixo, configurei o evento confirmed diretamento no elemento, assim não é mais necessario usar
+          // a propriedade click.native, bastar usar o event customizado. 
+          -->
+          <div class="polaroids__footer">
+            <btn skin="danger" type="button" label="delete" :sensitive="true" @confirmed="remove($event)"/>
+          </div>
         </polaroids>
       </div>
     </div>
@@ -55,18 +79,26 @@
 
 <script>
 
+// Importanto outros componentes para o escopo deste componente
 import Polaroids from '../shared/polaroids/Polaroids.vue';
 import Banner from '../shared/banner/Banner.vue'
 import Button from '../shared/button/Button.vue';
 
+// Importanto a diretiva para o escopo deste componente
+import rotate from '../../directives/rotate-alternative'
+
 export default {
   name: 'app',
 
+  // registrando os componentes importados acima
   components: {
     'polaroids' : Polaroids,
     'banner' : Banner,
     'btn' : Button
   },
+
+  // registrando a diretiva importada acima
+  directives: { rotate },
   
   data () {
     return {
@@ -101,11 +133,11 @@ export default {
     }
   },
 
-    methods :{
-      remove(data){
-        console.log(data)
-      }
+  methods :{
+    remove(data){
+      console.log(data)
     }
+  }
 }
 </script>
 
