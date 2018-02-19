@@ -35,6 +35,7 @@ export default {
 
 <style lang="scss">
 
+  @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
   @import './assets/sass/base';
 
   .page-fade-enter {

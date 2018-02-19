@@ -1,7 +1,7 @@
 <template>
   <div class="wrapper">
 
-    <banner :titulo="titulo"></banner>
+    <banner :titulo="page"></banner>
 
     <nav class="context-menu">
       <div class="container">
@@ -14,22 +14,84 @@
         <p>&nbsp;</p>
       </div>
     </nav>
+
+    <div class="content">
+      <div class="container clearfix">
+        <form @submit.prevent="salvar()">
+          <div class="field">
+            <label class="label">Titulo</label>
+            <div class="control">
+              <!-- <input class="input" type="text" @input="imagem.titulo=$event.target.value" :value="imagem.titulo"> -->
+              <input class="input" type="text" v-model="imagem.titulo">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">URL</label>
+            <div class="control">
+              <input class="input" type="text" @input="imagem.url=$event.target.value" :value="imagem.url">
+            </div>
+          </div>
+
+          <div class="field">
+            <label class="label">Message</label>
+            <div class="control">
+              <textarea class="textarea" @input="imagem.descricao=$event.target.value" :value="imagem.descricao"></textarea>
+            </div>
+          </div>
+
+          <div class="field is-grouped is-grouped-right">
+            <p class="control">
+              <btn skin="primary" type="submit" label="Cadastrar" />
+            </p>
+            <p class="control">
+              <btn type="reset" label="Cancelar" />
+            </p>
+          </div>
+        </form>
+        <div class="preview-card">
+          <div class="preview-card__image">
+            <img :src="imagem.url || 'http://www.germandrive.com/wp-content/uploads/2017/05/placeholder.gif'" :alt="imagem.titulo">
+          </div>
+          <h2 class="preview-card__title">
+            {{ imagem.titulo || 'Insira um Título'}}
+          </h2>
+          <p class="preview-card__descricao">
+            {{ imagem.descricao }}
+          </p>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script>
 
-  import Banner from '../shared/banner/Banner.vue'
+  import Banner from '../shared/banner/Banner.vue';
+  import Button from '../shared/button/Button.vue';
+  import Polaroids from '../shared/polaroids/Polaroids.vue';
+  import Foto from '../../domain/foto/Foto'
 
   export default {
     
     components : {
-      'banner' : Banner
+      'banner' : Banner,
+      'btn' : Button,
+      'polaroids': Polaroids
     },
 
     data(){
       return {
-        titulo: 'Cadastro'
+        page: 'Cadastro',
+
+        imagem: new Foto()
+      }
+    },
+
+    methods: {
+      salvar() {
+        this.$http.post('http://localhost:3000/v1/fotos', this.imagem)
+            .then(this.imagem = new Foto(), err => console.log(err))
       }
     }
 
@@ -37,6 +99,75 @@
 </script>
 
 <style lang="scss" scoped>
+
+  @import '../../assets/sass/forms';
+  @import '../../assets/sass/columns';
+  @import '../../assets/sass/card';
+
+  form{
+    display: block;
+    float: left;
+    width: 100%;
+    margin-top: 2em;
+    margin-right: 0;
+
+    @media (min-width: 768px){
+      width: 45%;
+      margin-right: 3em;      
+    }
+
+    .label{
+      text-align: left;
+      color: #969696;
+      font-size: .8em;
+      text-transform: uppercase;
+    }
+
+    .input{
+      box-shadow: none;
+      box-sizing: border-box;
+
+      &:focus{
+        outline: none !important;
+      }
+    }
+
+    .textarea{
+      box-shadow: none;
+      box-sizing: border-box;
+    }
+  }
+
+  .preview-card{
+    display: block;
+    float: right;
+    width: 100%;
+    margin-top: 2em;
+    padding: 20px;
+    border: 1px solid #CCC;
+    border-radius: 4px;
+
+    @media (min-width: 768px){
+      width: 45%;
+      margin-right: 0;      
+    }   
+
+    &__image{
+      display: block;
+      position: relative;
+      overflow: hidden;
+
+    }
+
+    &__image img{
+      max-width: 100%;
+      max-height: 250px;
+    }
+
+    &__title{
+      font-family: "Permanent Marker", sans-serif;
+    }
+  }
 
   .context-menu {
     border-bottom: 1px solid #CCC;

@@ -34,9 +34,7 @@
   }
 </script>
 
-<style lang="scss" scoped>
-
-  @import url('https://fonts.googleapis.com/css?family=Permanent+Marker');
+<style lang="scss">
 
   .polaroids {
     display: inline-block;
@@ -66,20 +64,16 @@
     a {
       background: #fff;
       display: block;
-      margin: 10px;
-      width: auto;
-      height: 220px;
+      margin: 0;
+      width: 100%;
+      max-height: 220px;
       overflow: hidden;
     }
 
-    a .polaroids__footer{
-      display: block;
+    .polaroids__options{
       position: absolute;
-      width: 100%;
-      right: 1%;
-      bottom: 1%;
-      padding: 10px;
-      text-align: right;
+      right: 15px;
+      bottom: 15px;
     }
 
     p{
