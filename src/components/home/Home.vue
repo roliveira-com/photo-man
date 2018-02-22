@@ -13,6 +13,8 @@
           <input class="filter-input" type="text" v-on:input="filtro = $event.target.value" placeholder="filtre por título">
         </div>
         <div class="context-menu__items-right">
+          <!-- a diretiva ':to' abaixo agora referencia o nome da rota ao invés so seu endereço -->
+          <router-link class="context-menu__item" :to="{name: 'cadastro'}">Nova Foto</router-link>
           <a class="context-menu__item" href="">Nova Foto</a>
           <a class="context-menu__item" href="">selecionar fotos</a>
           <a class="context-menu__item" href="">novo album</a>

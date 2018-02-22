@@ -25,7 +25,14 @@ export default {
 
   data(){
     return {
-      routes : routes
+      // ***
+      // Atribuindo para a propriedade routes, o objeto routes onde
+      // estão as configurações de rotas da aplicação. Contudo, filtramos
+      // casa haja a propriedade label. Isto evita que rotas genericas sejam 
+      // adicionadas ao menu. E posivel alcançar o mesmo resultado com a 
+      // diretiva v-show no proprio componente
+      // *** 
+      routes : routes.filter(route => route.label)
     }
   }
   
