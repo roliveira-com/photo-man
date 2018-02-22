@@ -41,7 +41,15 @@
         // Os argumentos, assim como o os modificadores dão a possibiidade de passar valores adicionais para ativar certas logicas nas Diretivas
         // No caso abaixo, o argumento ':scale' faz com que a diretiva 'v-rotate' aplique um efeito de scale 
         -->
-        <polaroids v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo" @confirmed="remove($event)">
+        <div class="notification is-success" v-show="message.success">
+          <button class="delete"></button>
+          {{ message.success }}
+        </div>
+        <div class="notification is-danger" v-show="message.error">
+          <button class="delete"></button>
+          {{ message.error }}
+        </div>
+        <polaroids v-for="imagem of filteredImages" :key="imagem._id" :titulo="imagem.titulo">
           <img v-rotate:scale.animate="1.5" :src="imagem.url" :alt="imagem.titulo">
           <!-- 
           // No botão abaixo o método remove() é chamado atraves do evento click do botao. Contudoo botão esta encapsulado 
@@ -55,7 +63,7 @@
           // a propriedade click.native, bastar usar o event customizado. 
           -->
           <div class="polaroids__options">
-            <btn skin="danger" type="button" label="delete" :sensitive="true" @confirmed="remove($event)"/>
+            <btn skin="danger" type="button" label="delete" :sensitive="true" @confirmed="remove(imagem)"/>
           </div>
         </polaroids>
       </div>
@@ -87,6 +95,8 @@ import Button from '../shared/button/Button.vue';
 // Importanto a diretiva para o escopo deste componente
 import rotate from '../../directives/rotate-alternative'
 
+import FotoService from '../../domain/foto/foto.service'
+
 export default {
   name: 'app',
 
@@ -104,7 +114,11 @@ export default {
     return {
       titulo: 'Album: Momentos',
       imagens: [],
-      filtro: ''
+      filtro: '',
+      message: {
+        success : '',
+        error: ''
+      }
     }
   },
 
@@ -113,13 +127,35 @@ export default {
   // #  São métodos que deteminado pontos do ciclo de vida do componente
   // #  Aqui, executamos uma chamada $http para a api que popula as imagens
   created(){
-    this.$http.get('http://localhost:3000/v1/fotos')
-        .then(res => res.json())
-        .then(
-          imgs => this.imagens = imgs,
-          // imgs => console.log(imgs),
-          err => console.log(err)
-        );
+
+    // ***
+    // Encapsulando o $resource/$http em um serviço
+    // Abaixo, começamos instanciando a classe FotoService já importada
+    // acima passando o $resource
+    // ***
+    this.service = new FotoService(this.$resource)
+    this.service
+      .lista()
+      .then(imgs => this.imagens = imgs, err => console.log(err))
+
+    // ***
+    // Utilizando o $resource
+    // Ele trabalha semelhante ai $http mas permite configurações ais refinadas
+    // Abaixo, instanciamos o objeto $resource para a url 'v1/fotos'
+    // ***
+    // this.resource = this.$resource('v1/fotos{/id}')
+
+    // this.resource
+    //   .query()
+    //   .then(res => res.json())
+    //   .then(imgs => this.imagens = imgs, err => console.log(err))
+
+    // this.$http.get('/v1/fotos')
+    //     .then(res => res.json())
+    //     .then(
+    //       imgs => this.imagens = imgs,
+    //       err => console.log(err)
+    //     );
   },
 
   computed: {
@@ -134,8 +170,41 @@ export default {
   },
 
   methods :{
-    remove(data){
-      console.log(data)
+    remove(imagem){
+
+      this.service
+        .deleta(imagem._id)
+        .then(
+          () => {
+            this.imagens.splice(this.imagens.indexOf(imagem), 1)
+            this.message.success = 'Foto Removida'
+          }, 
+          err => {
+            this.message.error = 'Não foi possível remover a foto'
+          }
+        )
+
+      // this.resource.delete({ id: imagem._id })
+      //   .then(
+      //     () => {
+      //       this.imagens.splice(this.imagens.indexOf(imagem), 1)
+      //       this.message.success = 'Foto Removida'
+      //     }, 
+      //     err => {
+      //       this.message.error = 'Não foi possível remover a foto'
+      //     }
+      //   )
+
+      // this.$http.delete(`v1/fotos/${imagem._id}`)
+      //     .then(
+      //       () => {
+      //         this.imagens.splice(this.imagens.indexOf(imagem), 1)
+      //         this.message.success = 'Foto Removida'
+      //       }, 
+      //       err => {
+      //         this.message.error = 'Não foi possível remover a foto'
+      //       }
+      //     )
     }
   }
 }
@@ -143,13 +212,8 @@ export default {
 
 <style lang="scss" scoped>
 
-  body {
-    margin: 0;
-  }
-
-  input{
-    outline: none;
-  }
+  @import '../../../node_modules/bulma/sass/utilities/all';
+  @import '../../../node_modules/bulma/sass/elements/notification';
 
   .context-menu {
     border-bottom: 1px solid #CCC;

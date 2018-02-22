@@ -12,6 +12,12 @@ import { routes } from './routes'
 // import './directives/rotate'
 
 Vue.use(VueResource);
+// ***
+// Configurando dominio/host nas opções do módulo vue-resource
+// Deste modo, podemos omitir o endereço base da api usando apenas 'v1/fotos'
+// ***
+Vue.http.options.root = 'http://localhost:3000'
+
 Vue.use(VueRouter);
 
 const router = new VueRouter({

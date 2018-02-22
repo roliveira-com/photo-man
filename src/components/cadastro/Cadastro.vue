@@ -70,7 +70,8 @@
   import Banner from '../shared/banner/Banner.vue';
   import Button from '../shared/button/Button.vue';
   import Polaroids from '../shared/polaroids/Polaroids.vue';
-  import Foto from '../../domain/foto/Foto'
+  import Foto from '../../domain/foto/foto.model'
+  import FotoService from '../../domain/foto/foto.service'
 
   export default {
     
@@ -88,10 +89,38 @@
       }
     },
 
+    created(){
+      // ***
+      // Utilizando o $resource
+      // Ele trabalha semelhante ai $http mas permite configurações ais refinadas
+      // Abaixo, instanciamos o objeto $resource para a url 'v1/fotos'
+      // ***
+      // this.resource = this.$resource('v1/fotos')
+
+      // ***
+      // Utilizando o Foto Service para abstrair as chamads na API
+      // ***
+      // Instanciando o serviço
+      this.service = new FotoService(this.$resource)
+
+    },
+
     methods: {
       salvar() {
-        this.$http.post('http://localhost:3000/v1/fotos', this.imagem)
-            .then(this.imagem = new Foto(), err => console.log(err))
+
+        this.service
+          .cadastra(this.imagem)
+          .then(this.imagem = new Foto(), err => console.log(err))
+
+        // ***
+        // No resource, o método save() substitui o post
+        // ***
+        // this.resource
+        //   .save(this.imagem)
+        //   .then(this.imagem = new Foto(), err => console.log(err))
+
+        // this.$http.post('http://localhost:3000/v1/fotos', this.imagem)
+        //     .then(this.imagem = new Foto(), err => console.log(err))
       }
     }
 
