@@ -17,6 +17,15 @@
 
     <div class="content">
       <div class="container clearfix">
+        <div class="notification is-success" v-show="message.success">
+          <button class="delete"></button>
+          {{ message.success }}
+        </div>
+        <div class="notification is-danger" v-show="message.error">
+          <button class="delete"></button>
+          {{ message.error }}
+        </div>
+
         <form @submit.prevent="salvar()">
           <div class="field">
             <label class="label">Titulo</label>
@@ -85,8 +94,11 @@
       return {
         
         imagem: new Foto(),
-
         id: this.$route.params.id,
+        message: {
+          success : '',
+          error: ''
+        }
       }
     },
 
@@ -113,7 +125,7 @@
       if (this.id){
         this.service
           .buscaPorId(this.id)
-          .then(resp => this.imagem = resp)
+          .then(resp => this.imagem = resp, err => this.message = err.message)
       }
 
     },

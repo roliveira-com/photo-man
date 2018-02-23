@@ -141,7 +141,7 @@ export default {
     this.service = new FotoService(this.$resource)
     this.service
       .lista()
-      .then(imgs => this.imagens = imgs, err => this.message.error = err)
+      .then(imgs => this.imagens = imgs, err => this.message.error = err.message)
 
     // ***
     // Utilizando o $resource
@@ -185,7 +185,7 @@ export default {
             this.message.success = 'Foto Removida'
           }, 
           err => {
-            this.message.error = err
+            this.message.error = err.message
           }
         )
 

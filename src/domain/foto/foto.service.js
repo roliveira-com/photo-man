@@ -28,6 +28,10 @@ export default class FotoService {
   deleta(id){
     return this._resource
                 .delete({ id: id })
+                .then(null, err =>{
+                  console.log(err);
+                  throw new Error('Não foi possível deletar a imagem')
+                })
   }
 
   buscaPorId(id){
