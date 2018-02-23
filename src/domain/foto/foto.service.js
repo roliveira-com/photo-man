@@ -7,17 +7,36 @@ export default class FotoService {
   lista(){
     return this._resource
                 .query()
-                .then(res => res.json())
+                .then(res => res.json(), err => {
+                  console.log(err);
+                  throw new Error('Não foi possĩvel obter lista')
+                })
   }
 
   cadastra(imagem){
-    return this._resource
-                .save(imagem)
+
+    if(imagem._id){
+      return this._resource
+                  .update({ id : imagem._id }, imagem)
+    }else {
+      return this._resource
+                  .save(imagem)
+    }
+
   }
 
   deleta(id){
     return this._resource
                 .delete({ id: id })
+  }
+
+  buscaPorId(id){
+    return this._resource
+                .get({ id })
+                .then(res => res.json(), err => {
+                  console.log(err);
+                  throw new Error('Não foi possĩvel deletar a imagem')
+                })
   }
 
 }

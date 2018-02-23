@@ -83,9 +83,16 @@
 
     data(){
       return {
-        page: 'Cadastro',
+        
+        imagem: new Foto(),
 
-        imagem: new Foto()
+        id: this.$route.params.id,
+      }
+    },
+
+    computed: {
+      page() {
+        return this.imagem._id ? 'Edição' : 'Cadastro';
       }
     },
 
@@ -103,6 +110,12 @@
       // Instanciando o serviço
       this.service = new FotoService(this.$resource)
 
+      if (this.id){
+        this.service
+          .buscaPorId(this.id)
+          .then(resp => this.imagem = resp)
+      }
+
     },
 
     methods: {
@@ -110,7 +123,10 @@
 
         this.service
           .cadastra(this.imagem)
-          .then(this.imagem = new Foto(), err => console.log(err))
+          .then(() => {
+            if(this.id) this.$router.push({name: 'home'});
+            this.imagem = new Foto()
+          }, err => console.log(err))
 
         // ***
         // No resource, o método save() substitui o post

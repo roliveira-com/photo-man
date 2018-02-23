@@ -76,6 +76,10 @@
       bottom: 15px;
     }
 
+    .polaroids__options a{
+      display: inline;
+    }
+
     p{
       margin: 15px 0;
     }

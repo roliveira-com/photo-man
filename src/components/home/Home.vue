@@ -65,6 +65,9 @@
           // a propriedade click.native, bastar usar o event customizado. 
           -->
           <div class="polaroids__options">
+            <router-link :to="{name:'altera', params: {id : imagem._id}}">
+              <btn skin="primary" type="button" label="edit"/>
+            </router-link>
             <btn skin="danger" type="button" label="delete" :sensitive="true" @confirmed="remove(imagem)"/>
           </div>
         </polaroids>
@@ -138,7 +141,7 @@ export default {
     this.service = new FotoService(this.$resource)
     this.service
       .lista()
-      .then(imgs => this.imagens = imgs, err => console.log(err))
+      .then(imgs => this.imagens = imgs, err => this.message.error = err)
 
     // ***
     // Utilizando o $resource
@@ -182,7 +185,7 @@ export default {
             this.message.success = 'Foto Removida'
           }, 
           err => {
-            this.message.error = 'Não foi possível remover a foto'
+            this.message.error = err
           }
         )
 
