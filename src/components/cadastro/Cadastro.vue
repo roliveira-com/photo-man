@@ -145,6 +145,7 @@
                     if(this.id) this.$router.push({name: 'home'});
                     this.imagem = new Foto()
                   }, err => console.log(err))
+                this.message.error = '';
               }
               else{
                 this.message.error = 'Há campos inválidos no formulário'
