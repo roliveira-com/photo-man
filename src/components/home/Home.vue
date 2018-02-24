@@ -217,9 +217,6 @@ export default {
 
 <style lang="scss" scoped>
 
-  @import '../../../node_modules/bulma/sass/utilities/all';
-  @import '../../../node_modules/bulma/sass/elements/notification';
-
   .context-menu {
     border-bottom: 1px solid #CCC;
 

@@ -66,7 +66,7 @@
       display: block;
       margin: 0;
       width: 100%;
-      max-height: 220px;
+      height: 220px;
       overflow: hidden;
     }
 

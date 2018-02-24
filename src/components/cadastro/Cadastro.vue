@@ -17,11 +17,11 @@
 
     <div class="content">
       <div class="container clearfix">
-        <div class="notification is-success" v-show="message.success">
+        <div class="notification is-success" v-show="this.message.success">
           <button class="delete"></button>
           {{ message.success }}
         </div>
-        <div class="notification is-danger" v-show="message.error">
+        <div class="notification is-danger" v-show="this.message.error">
           <button class="delete"></button>
           {{ message.error }}
         </div>
@@ -31,14 +31,16 @@
             <label class="label">Titulo</label>
             <div class="control">
               <!-- <input class="input" type="text" @input="imagem.titulo=$event.target.value" :value="imagem.titulo"> -->
-              <input class="input" type="text" v-model="imagem.titulo">
+              <input name="titulo" data-vv-as="título" v-validate data-vv-rules="required|min:5|max:30" class="input" type="text" v-model.lazy="imagem.titulo">
+              <p class="helper is-error" v-show="errors.has('titulo')">{{ errors.first('titulo') }}</p>
             </div>
           </div>
 
           <div class="field">
             <label class="label">URL</label>
             <div class="control">
-              <input class="input" type="text" @input="imagem.url=$event.target.value" :value="imagem.url">
+              <input name="url" v-validate data-vv-rules="required" class="input" type="text" @input="imagem.url=$event.target.value" :value="imagem.url">
+              <p class="helper is-error" v-show="errors.has('url')">URL Obrigatória</p>
             </div>
           </div>
 
@@ -120,6 +122,7 @@
       // Utilizando o Foto Service para abstrair as chamads na API
       // ***
       // Instanciando o serviço
+
       this.service = new FotoService(this.$resource)
 
       if (this.id){
@@ -133,12 +136,22 @@
     methods: {
       salvar() {
 
-        this.service
-          .cadastra(this.imagem)
-          .then(() => {
-            if(this.id) this.$router.push({name: 'home'});
-            this.imagem = new Foto()
-          }, err => console.log(err))
+        this.$validator.validateAll()
+            .then(success => {
+              if(success){
+                this.service
+                  .cadastra(this.imagem)
+                  .then(() => {
+                    if(this.id) this.$router.push({name: 'home'});
+                    this.imagem = new Foto()
+                  }, err => console.log(err))
+              }
+              else{
+                this.message.error = 'Há campos inválidos no formulário'
+              }
+            })
+
+
 
         // ***
         // No resource, o método save() substitui o post
