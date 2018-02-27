@@ -1,3 +1,6 @@
+  @import '~bulma/sass/utilities/all';
+  @import '~bulma/sass/elements/notification';
+
 body {
   font-family: 'Avenir', Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
@@ -47,4 +50,14 @@ div.container {
 .logo-sm {
   width: 35px;
   height: auto;
+}
+
+.helper{
+  font-size: 12px;
+  font-weight: bold;
+  margin: 3px 0 0 0;
+
+  &.is-error{
+    color: red;
+  }
 }

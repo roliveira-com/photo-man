@@ -3,7 +3,10 @@ import App from './App.vue'
 
 import VueResource from 'vue-resource';
 import VueRouter from 'vue-router';
+import VeeValidate, { Validator } from 'vee-validate';
+
 import { routes } from './routes'
+import ValidationMessages from 'vee-validate/dist/locale/pt_BR';
 
 // ***
 // Importando diretivas diretamente no global view object
@@ -37,6 +40,18 @@ Vue.http.interceptors.push((req, next) => {
 });
 
 Vue.use(VueRouter);
+
+// Vue.use(VeeValidate, {
+//   locale: 'pt_BR',
+//   dictionary: {
+//     pt_BR: { 
+//       messages: ValidationMessages
+//     }
+//   }
+// });
+
+Validator.localize('pt_BR', ValidationMessages);
+Vue.use(VeeValidate);
 
 const router = new VueRouter({
   routes: routes,
