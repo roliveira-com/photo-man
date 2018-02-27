@@ -157,9 +157,7 @@
 
 <style lang="scss" scoped>
 
-  @import '../../assets/sass/forms';
-  @import '../../assets/sass/columns';
-  @import '../../assets/sass/card';
+  @import './cadastro';
 
   form{
     display: block;
